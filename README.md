@@ -7,6 +7,6 @@
 ## 	Create an Express Project
  - express test
  - install dependencies: cd test && `npm install` 
- - run the app: DEBUG=my-app ./bin/www
+ - run the app: DEBUG=my-app ./bin/www or PORT=8888 ./bin/www
 
 ## References

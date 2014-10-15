@@ -3,8 +3,24 @@ extends layout
 block content
   //-h1 = title
   //-p Welcome to #{title}
-  h1 Hello, #{msg}
-  h3 
+  //-h1 Hello, #{msg}
+  //-h3 
     u System Info
-  p Ip Address:#{IP}  
-  a(href="/#/test") Test
+  //-p Ip Address:#{IP}  
+  a(href="/test") Test
+  table(align="center")
+    tr
+      th(colspan="2") LoginForm
+    tr
+      td Username
+      td 
+         input(type="text", name="uname")
+    tr
+      td Age
+      td 
+        input(type="text", name="age")
+    tr
+      td(colspan="2")
+        button(type="button", name="login") Login
+  
+

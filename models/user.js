@@ -1,3 +1,4 @@
+
 var Schema = mongoose.Schema;
 var UserDetail = new Schema({
       username: String,

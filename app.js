@@ -1,56 +1,62 @@
-var express=require('express');
-var nodemailer = require("nodemailer");
-var app=express();
+// Module dependencies.
+
+var express = require('express');
 var path = require('path');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
+var routes = require('./routes/index');
+var app = module.exports = express();
 
-/*
-Here we are configuring our SMTP Server details.
-STMP is mail server which is responsible for sending and recieving email.
-*/
+app.set('port', process.env.PORT || 3000);
 
-var smtpTransport = nodemailer.createTransport("SMTP",{
-service: "Gmail",
-debug: true,
-auth: {
-	user: "sivaram.nyayapati@gmail.com",
-	pass: "9248321987"
-	}
-});
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
-
-/*------------------SMTP Over-----------------------------*/
-
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/// error handlers
 
-/*------------------Routing Started ------------------------*/
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
 
-app.get('/',function(req,res){
-         res.sendfile('views/index.html');
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
 });
 
-app.get('/send',function(req,res){
-	var mailOptions={
-	     to : req.query.to,
-	     subject : req.query.subject,
-	     text : req.query.text
-	} 
- 	console.log(mailOptions);
-	smtpTransport.sendMail(mailOptions, function(error, response){
-		 if(error){
-		  console.log(error);
-		  res.end("error");
-		 } else{
-		   console.log("Message sent: " + response.message);
-		   res.end("sent");
-		}
-	});
+app.use('/', routes.index);
 
+var server = app.listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
 });
 
-/*--------------------Routing Over----------------------------*/
+var io = require('socket.io')(server);
+var redis = require('socket.io-redis');
+io.adapter(redis({ host: '127.0.0.1', port: 6379 }));
 
-app.listen(5000, function(){
-	console.log("Express Started on Port 5000");
+io.sockets.on('connection', function(socket) {
+  socket.on('message', function(data) {
+    socket.broadcast.emit('message', data);
+  });
 });

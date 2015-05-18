@@ -15,4 +15,16 @@ This is simple node.js application with [Express.js 4.x](https://github.com/visi
 
 http://ejosh.co/de/2015/01/node-js-socket-io-and-redis-intermediate-tutorial-server-side/
 
+###Html 5 server-sent events
+
+- http://www.smartjava.org/content/html5-server-sent-events-angularjs-nodejs-and-expressjs
+- https://github.com/wandenberg/nginx-push-stream-module
+- http://demo.howopensource.com/sse/
+
+
+###Express version changes
+
+- http://stackoverflow.com/questions/25550819/error-most-middleware-like-bodyparser-is-no-longer-bundled-with-express
+
+
 

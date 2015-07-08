@@ -16,7 +16,6 @@ router.get('/userlist', function(req, res) {
  */
 router.post('/adduser', function(req, res) {
     var db = req.db;
-    console.log("users/adduser ", req.body);
     db.collection('userlist').insert(req.body, function(err, result){
         res.send(
             (err === null) ? { msg: '' } : { msg: err }
@@ -30,7 +29,6 @@ router.post('/adduser', function(req, res) {
 router.delete('/edituser/:id', function(req, res) {
     var db = req.db;
     var userToEdit = req.params.id;
-    console.log(userToEdit);
     db.collection('userlist').findById(userToEdit, function(err, result) {
         db.collection('userlist').save(req.body, function(err, result){
         res.send(
